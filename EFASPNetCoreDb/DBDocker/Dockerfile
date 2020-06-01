@@ -1,0 +1,33 @@
+FROM microsoft/mssql-server-windows-developer
+RUN ["powershell", "mkdir", "c:\\sqlserver"]
+COPY EFASPNetCoreDb.mdf c:\\sqlserver
+COPY EFASPNetCoreDb_log.ldf c:\\sqlserver
+ENV attach_dbs='[{"dbName":"EFASPNetCoreDb","dbFiles":["c:\\sqlserver\\EFASPNetCoreDb.mdf","c:\\sqlserver\\EFASPNetCoreDb_log.ldf"]}]'
+ENV SA_PASSWORD=cybage@12345
+ENV ACCEPT_EULA=Y
+EXPOSE 1405
+
+# base this image of the SQL 2017 latest image
+#FROM microsoft/mssql-server-linux:2017-latest
+ 
+# make a directory within the container
+#RUN mkdir /var/opt/sqlserver
+ 
+# copy attach-db.sh into container
+#COPY attach-db.sh /var/opt/sqlserver
+ 
+# copy database files into container
+#COPY EFASPNetCoreDb.mdf /var/opt/sqlserver
+#COPY EFASPNetCoreDb_log.ldf /var/opt/sqlserver
+
+#ENV SA_PASSWORD=cybage@12345
+#ENV ACCEPT_EULA=Y
+#EXPOSE 1405
+
+# use the ENTRYPOINT command to execute the script and start SQL Server
+#ENTRYPOINT /var/opt/sqlserver/attach-db.sh & /opt/mssql/bin/sqlservr
+
+#HEALTHCHECK --interval=10s  \
+#	CMD /opt/mssql-tools/bin/sqlcmd -S . -U sa -P cybage@12345 \
+#		-Q "CREATE DATABASE [EFASPNetCoreDb] ON (FILENAME = '/var/opt/sqlserver/EFASPNetCoreDb.mdf'),(FILENAME = '/var/opt/sqlserver/EFASPNetCoreDb_log.ldf') FOR ATTACH"
+

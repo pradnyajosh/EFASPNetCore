@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  corewebapp:
+    container_name: corewebappcontainer
+    image: pradnyajosh/efaspnetcore:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - nat
+    ports:
+      - 8031:80
+    depends_on:
+      - db
+
+  db:
+    container_name: sqldbcontainer
+    image: pradnyajosh/sqlserver2017image    
+    networks:
+      - nat
+    ports:
+      - 1405:1433
+
+networks:
+    nat:
